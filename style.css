@@ -441,7 +441,7 @@ input::placeholder {
 /* Transaction List */
 .list-container h3 {
   font-size: 1.0625rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: var(--text-color);
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -473,8 +473,11 @@ input::placeholder {
 
 .transaction-item .left {
   display: flex;
+  flex: 1;
+  justify-content: flex-start;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
+  width: 100%
 }
 
 .transaction-item .category-icon {
@@ -513,15 +516,20 @@ input::placeholder {
 
 .transaction-item .right {
   display: flex;
+  flex: 1;
+  justify-content: flex-end;
   align-items: center;
   gap: 8px;
+  width: 100%
 }
+
 
 .transaction-item .amount {
   font-weight: 600;
   font-size: 1.125rem;
   letter-spacing: -0.02em;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  margin-right: auto;
 }
 
 .transaction-item .amount.income { color: var(--primary-green); }
@@ -837,4 +845,40 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     font-size: 1rem;
     padding: 6px 12px;
   }
+}
+
+/* 手機版樣式調整 */
+@media (max-width: 768px) {
+    .transaction-list .transaction-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .transaction-item .details {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+    }
+
+    .transaction-item .details .amount {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--primary-red);
+    }
+
+    .transaction-item .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .transaction-item .actions button {
+        flex: 0 0 auto;
+        font-size: 0.8rem;
+    }
 }
