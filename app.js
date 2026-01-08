@@ -61,12 +61,14 @@ async function login(username, password) {
   });
   token = data.token;
   localStorage.setItem("token", token);
+  localStorage.setItem("username", username.trim()); // Save trimmed username
   return data;
 }
 
 function logout() {
   token = null;
   localStorage.removeItem("token");
+  localStorage.removeItem("username");
   showLanding();
 }
 
@@ -78,6 +80,7 @@ async function validateToken() {
   } catch (error) {
     token = null;
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     return false;
   }
 }
@@ -99,6 +102,15 @@ function showMain() {
   landingSection.classList.add("hidden");
   loginSection.classList.add("hidden");
   mainSection.classList.remove("hidden");
+  
+  const savedUsername = localStorage.getItem("username");
+  if (savedUsername) {
+    const formattedName = savedUsername.trim().charAt(0).toUpperCase() + savedUsername.trim().slice(1);
+    welcomeMsg.textContent = `歡迎 ${formattedName}`;
+  } else {
+    welcomeMsg.textContent = "歡迎回來";
+  }
+
   if (!selectedMonth) {
     initMonthSelector();
   }
@@ -355,13 +367,13 @@ function renderTransactions() {
         txn.amount
       ).toLocaleString()}
           </span>
-          ${showPaidByInfo ? `<button class="reimburse-btn" onclick="window.markReimbursed('${txn.id}')" title="標記為已補款">✓</button>` : ""}
+          ${showPaidByInfo ? `<button class="reimburse-btn" onclick="window.markReimbursed('${txn.id}')" title="標記為已補款"><i class="ph ph-check"></i></button>` : ""}
           <button class="edit-btn" onclick="window.editTransaction('${
             txn.id
-          }')">✎</button>
+          }')"><i class="ph ph-pencil-simple"></i></button>
           <button class="delete-btn" onclick="window.deleteTransaction('${
             txn.id
-          }')">✕</button>
+          }')"><i class="ph ph-trash"></i></button>
         </div>
       </div>
     `;

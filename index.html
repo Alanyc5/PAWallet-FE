@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Chart.js -->
@@ -25,18 +27,20 @@
         <!-- 歡迎畫面 (Landing) -->
         <section id="landing-section" class="section landing-container">
             <div class="landing-card">
-                <div class="app-logo">💰</div>
+                <div class="app-logo"><i class="ph ph-wallet"></i></div>
                 <h1>PA-Wallet</h1>
                 <p class="subtitle">This is Peiya & Alan's expense tracker.<br>Peiya please don't spend too much 🥺</p>
-                <button id="go-login-btn" class="btn btn-primary btn-lg">Open Wallet</button>
+                <button id="go-login-btn" class="btn btn-primary btn-lg" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="ph ph-wallet"></i> Open Wallet
+                </button>
             </div>
         </section>
 
         <!-- 登入畫面 -->
         <section id="login-section" class="section hidden">
             <div class="login-card">
-                <button id="back-to-landing" class="btn-icon back-btn">←</button>
-                <div class="app-logo small">💰</div>
+                <button id="back-to-landing" class="btn-icon back-btn"><i class="ph ph-arrow-left"></i></button>
+                <div class="app-logo small"><i class="ph ph-wallet"></i></div>
                 <h2>Log in</h2>
                 <form id="login-form">
                     <div class="form-group">
@@ -49,7 +53,9 @@
                         <input type="password" id="password" name="password" required autocomplete="current-password"
                             placeholder="Your secret code">
                     </div>
-                    <button type="submit" class="btn btn-primary">Unlock</button>
+                    <button type="submit" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px;">
+                        <i class="ph ph-lock-key-open"></i> Unlock
+                    </button>
                     <p id="login-error" class="error-msg"></p>
                 </form>
             </div>
@@ -59,10 +65,12 @@
         <section id="main-section" class="section hidden">
             <header class="header">
                 <div class="brand">
-                    <span class="app-logo small">💰</span>
+                    <span class="app-logo small"><i class="ph ph-wallet"></i></span>
                     <span id="welcome-msg">歡迎回來！</span>
                 </div>
-                <button id="logout-btn" class="btn btn-sm btn-secondary">登出</button>
+                <button id="logout-btn" class="btn btn-sm btn-secondary" style="display: flex; align-items: center; gap: 4px; min-height: 48px; padding: 0 16px;">
+                    <i class="ph ph-sign-out"></i> 登出
+                </button>
             </header>
 
             <!-- 帳戶統計 -->
@@ -95,21 +103,25 @@
             <!-- 功能按鈕區 -->
             <div class="action-grid">
                 <button id="btn-add-transaction" class="action-card income">
-                    <span class="icon">✏️</span>
+                    <span class="icon"><i class="ph ph-pencil-simple"></i></span>
                     <span>記一筆</span>
                 </button>
                 <button id="btn-manage-category" class="action-card expense">
-                    <span class="icon">🗂️</span>
+                    <span class="icon"><i class="ph ph-folders"></i></span>
                     <span>管理分類</span>
                 </button>
             </div>
 
             <!-- 交易紀錄 -->
             <div class="list-container">
-                <div class="list-header">
-                    <button id="prev-month-btn" class="month-nav-btn">‹</button>
-                    <h3 id="transaction-list-title" class="month-title-clickable">11月收支</h3>
-                    <button id="next-month-btn" class="month-nav-btn">›</button>
+                <div class="list-header" style="display: flex; align-items: center; justify-content: space-between;">
+                    <button id="prev-month-btn" class="month-nav-btn" style="width: 48px; height: 48px; font-size: 24px; display: flex; align-items: center; justify-content: center;">
+                        <i class="ph ph-caret-left"></i>
+                    </button>
+                    <h3 id="transaction-list-title" class="month-title-clickable" style="margin: 0;">11月收支</h3>
+                    <button id="next-month-btn" class="month-nav-btn" style="width: 48px; height: 48px; font-size: 24px; display: flex; align-items: center; justify-content: center;">
+                        <i class="ph ph-caret-right"></i>
+                    </button>
                 </div>
                 
                 <!-- 圖表區域 -->
