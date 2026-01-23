@@ -25,6 +25,11 @@ const transactionListTitle = document.getElementById("transaction-list-title");
 const totalIncome = document.getElementById("total-income");
 const totalExpense = document.getElementById("total-expense");
 
+const alanProxyAmount = document.getElementById("alan-proxy-amount");
+const peiyaProxyAmount = document.getElementById("peiya-proxy-amount");
+const settlementDiffMsg = document.getElementById("settlement-diff-msg");
+const btnClearAllSettlements = document.getElementById("btn-clear-all-settlements");
+
 const budgetSection = document.getElementById("budget-section");
 const budgetRemaining = document.getElementById("budget-remaining");
 const budgetProgressBar = document.getElementById("budget-progress-bar");
@@ -406,6 +411,33 @@ function updateSummary() {
 
   totalIncome.textContent = income.toLocaleString();
   totalExpense.textContent = expense.toLocaleString();
+
+  // 計算代墊統計 (只計算未補款的支出)
+  const alanProxy = monthlyTransactions
+    .filter((txn) => txn.type === "expense" && txn.paid_by === "Alan" && 
+                     !(txn.is_reimbursed === true || txn.is_reimbursed === "true" || String(txn.is_reimbursed).toLowerCase() === "true"))
+    .reduce((sum, txn) => sum + Number(txn.amount), 0);
+
+  const peiyaProxy = monthlyTransactions
+    .filter((txn) => txn.type === "expense" && txn.paid_by === "Peiya" && 
+                     !(txn.is_reimbursed === true || txn.is_reimbursed === "true" || String(txn.is_reimbursed).toLowerCase() === "true"))
+    .reduce((sum, txn) => sum + Number(txn.amount), 0);
+
+  alanProxyAmount.textContent = alanProxy.toLocaleString();
+  peiyaProxyAmount.textContent = peiyaProxy.toLocaleString();
+
+  // 計算差距
+  if (alanProxy === 0 && peiyaProxy === 0) {
+    settlementDiffMsg.textContent = "本月暫無未結清代墊款項";
+  } else if (alanProxy === peiyaProxy) {
+    settlementDiffMsg.textContent = "兩人代墊金額相等，暫時扯平！";
+  } else if (alanProxy > peiyaProxy) {
+    const diff = alanProxy - peiyaProxy;
+    settlementDiffMsg.innerHTML = `Peiya 應付給 Alan <span class="income">$${diff.toLocaleString()}</span>`;
+  } else {
+    const diff = peiyaProxy - alanProxy;
+    settlementDiffMsg.innerHTML = `Alan 應付給 Peiya <span class="income">$${diff.toLocaleString()}</span>`;
+  }
 
   // Update Budget UI
   const budgetAmount = Number(budget.amount);
@@ -999,6 +1031,63 @@ window.markReimbursed = async function (id) {
   }
 };
 
+// 一鍵結清所有代墊
+window.markAllReimbursed = async function () {
+  if (!selectedMonth) return;
+  const [year, month] = selectedMonth.split('-').map(Number);
+  const monthlyTransactions = getMonthlyTransactions(year, month - 1);
+  
+  // 找出所有未補款的代墊交易
+  const pendingTxns = monthlyTransactions.filter(txn => {
+    const isReimbursed = txn.is_reimbursed === true || 
+                        txn.is_reimbursed === "true" || 
+                        String(txn.is_reimbursed).toLowerCase() === "true";
+    return (txn.paid_by === "Alan" || txn.paid_by === "Peiya") && !isReimbursed;
+  });
+
+  if (pendingTxns.length === 0) {
+    return Swal.fire("提示", "本月沒有需要結清的代墊款項喔！", "info");
+  }
+
+  const result = await Swal.fire({
+    title: "一鍵結清所有代墊？",
+    text: `確定要將本月 ${pendingTxns.length} 筆代墊紀錄標記為已補款嗎？`,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#5abf98",
+    confirmButtonText: "確認結清",
+    cancelButtonText: "取消",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      Swal.fire({
+        title: "處理中...",
+        text: "正在大規模結清中...",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      // 由於沒有批量 API，逐一發送請求
+      // 使用 Promise.all 可能會對 Google Sheets API 造成壓力，這裡建議順序執行或限制並行
+      for (const txn of pendingTxns) {
+        await api(`/api/transactions/${txn.id}/reimburse`, {
+          method: "PATCH",
+          body: JSON.stringify({ is_reimbursed: true }),
+        });
+      }
+      
+      await loadTransactions();
+      Swal.fire("成功！", "本月所有代墊已結清", "success");
+    } catch (error) {
+      Swal.fire("失敗", "結清過程中出錯：" + error.message, "error");
+    }
+  }
+};
+
 // ===== Event Listeners =====
 goLoginBtn.addEventListener("click", showLogin);
 backToLandingBtn.addEventListener("click", showLanding);
@@ -1022,6 +1111,7 @@ logoutBtn.addEventListener("click", logout);
 btnAddTransaction.addEventListener("click", openAddTransactionModal);
 btnManageCategory.addEventListener("click", openManageCategoryModal);
 budgetSection.addEventListener("click", openBudgetModal);
+btnClearAllSettlements.addEventListener("click", window.markAllReimbursed);
 
 // 月份選擇器事件監聽
 prevMonthBtn.addEventListener('click', goToPrevMonth);

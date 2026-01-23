@@ -1,19 +1,19 @@
 /* ===== CSS Variables ===== */
 :root {
-  --primary-bg: #f5f5f7; /* Apple's light gray background */
-  --card-bg: #ffffff; /* Pure white cards */
-  --text-color: #1d1d1f; /* Apple's dark text */
-  --text-light: #86868b; /* Apple's light gray text */
-  --text-secondary: #6e6e73;
-  --primary-accent: #0071e3; /* Apple blue */
-  --primary-green: #30d158; /* Apple green */
-  --primary-red: #ff3b30; /* Apple red */
-  --border-color: #d2d2d7; /* Subtle border */
-  --border-light: #e5e5ea;
-  --radius: 12px; /* Subtle rounded corners */
-  --radius-lg: 18px;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --primary-bg: #e0eafc; /* Liquid Glass base background */
+  --card-bg: rgba(255, 255, 255, 0.8); /* Increased opacity to improve readability */
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --text-color: #1d1d1f;
+  --text-light: #6e6e73;
+  --text-secondary: #424245;
+  --primary-accent: #0071e3;
+  --primary-green: #28a745;
+  --primary-red: #d93939;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-light: rgba(255, 255, 255, 0.4);
+  --radius: 16px; 
+  --radius-lg: 24px;
 }
 
 /* ===== Reset & Base ===== */
@@ -25,7 +25,8 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, 'Noto Sans TC', sans-serif;
-  background: var(--primary-bg);
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  background-attachment: fixed;
   color: var(--text-color);
   min-height: 100vh;
   line-height: 1.47059;
@@ -75,10 +76,12 @@ body {
 
 .landing-card {
   background: var(--card-bg);
+  backdrop-filter: blur(24px); /* Increased blur */
+  -webkit-backdrop-filter: blur(24px);
   padding: 64px 48px;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-light);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
   max-width: 420px;
   width: 100%;
 }
@@ -140,13 +143,15 @@ h2 {
 
 .login-card {
   background: var(--card-bg);
+  backdrop-filter: blur(24px); /* Increased blur */
+  -webkit-backdrop-filter: blur(24px);
   padding: 48px 40px;
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 420px;
   position: relative;
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .back-btn {
@@ -291,10 +296,12 @@ input::placeholder {
   align-items: center;
   margin-bottom: 32px;
   background: var(--card-bg);
+  backdrop-filter: blur(20px); /* Increased blur */
+  -webkit-backdrop-filter: blur(20px);
   padding: 12px 20px;
   border-radius: var(--radius);
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .brand {
@@ -311,10 +318,12 @@ input::placeholder {
 /* Summary Card */
 .bells-card {
   background: var(--card-bg);
+  backdrop-filter: blur(24px); /* Increased blur */
+  -webkit-backdrop-filter: blur(24px);
   padding: 32px 28px;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   margin-bottom: 32px;
   text-align: center;
 }
@@ -336,11 +345,11 @@ input::placeholder {
 }
 
 .stat-item {
-  background: var(--primary-bg);
+  background: rgba(255, 255, 255, 0.3);
   padding: 16px 24px;
   border-radius: var(--radius);
   min-width: 140px;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--glass-border);
 }
 
 @media (max-width: 767px) {
@@ -373,6 +382,35 @@ input::placeholder {
 .stat-item.income .amount { color: var(--primary-green); }
 .stat-item.expense .amount { color: var(--primary-red); }
 
+/* Settlement Card Styles */
+.settlement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -16px;
+}
+
+.settlement-header .label {
+  font-weight: 600;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settlement-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-color);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.settlement-footer span.income {
+  font-weight: 700;
+  margin-left: 4px;
+}
+
 /* Action Grid */
 .action-grid {
   display: grid;
@@ -389,7 +427,7 @@ input::placeholder {
 }
 
 .action-card {
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--glass-border);
   padding: 24px 20px;
   border-radius: var(--radius);
   display: flex;
@@ -403,7 +441,9 @@ input::placeholder {
   font-size: 0.9375rem;
   color: var(--text-color);
   background: var(--card-bg);
-  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--glass-shadow);
 }
 
 @media (max-width: 767px) {
@@ -455,14 +495,16 @@ input::placeholder {
 
 .transaction-item {
   background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   padding: 16px 20px;
   border-radius: var(--radius);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: var(--shadow);
+  box-shadow: var(--glass-shadow);
   transition: all 0.2s;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--glass-border);
 }
 
 .transaction-item:hover {
@@ -707,11 +749,12 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
 .progress-bar-bg {
   width: 100%;
-  height: 8px;
-  background-color: var(--primary-bg);
-  border-radius: 4px;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
   overflow: hidden;
   margin-bottom: 12px;
+  border: 1px solid var(--border-light);
 }
 
 .progress-bar-fill {
@@ -755,9 +798,11 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 .month-nav-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--glass-border);
   border-radius: 50%;
   background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--text-color);
   font-size: 1.5rem;
   font-weight: 300;
@@ -769,6 +814,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   flex-shrink: 0;
   padding: 0;
   margin: 0;
+  box-shadow: var(--glass-shadow);
 }
 
 .month-nav-btn:hover {
@@ -882,3 +928,89 @@ div:where(.swal2-container) div:where(.swal2-popup) {
         font-size: 0.8rem;
     }
 }
+
+/* ===== SweetAlert Glass Style ===== */
+.swal2-popup {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: var(--glass-shadow) !important;
+}
+
+.swal2-container.swal2-backdrop-show {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.swal2-title, .swal2-html-container {
+    color: var(--text-color) !important;
+}
+
+.swal2-input, .swal2-select {
+    border-radius: var(--radius) !important;
+    border: 1px solid var(--border-light) !important;
+    background: var(--card-bg) !important;
+}
+
+/* Fix SweetAlert icon alignment issues caused by global reset */
+.swal2-icon,
+.swal2-icon * {
+    box-sizing: content-box !important;
+}
+
+.swal2-success-fix {
+    box-sizing: content-box !important;
+}
+
+/* 修正 SweetAlert 成功圖示的線條對齊 */
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+    box-sizing: content-box !important;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+    box-sizing: content-box !important;
+}
+
+/* 確保 SweetAlert 的偽元素不會被全域 reset 的 margin/padding 影響 */
+.swal2-popup *, .swal2-popup *::before, .swal2-popup *::after {
+    box-sizing: border-box;
+}
+
+.swal2-icon, .swal2-icon * {
+    box-sizing: content-box !important;
+}
+
+.swal2-icon *::before, .swal2-icon *::after {
+    box-sizing: content-box !important;
+}
+
+/* 完美修復 SweetAlert 圖示對齊問題 */
+.swal2-icon.swal2-success {
+    border-color: #a5dc86 !important;
+}
+
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+    background-color: #a5dc86 !important;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+    border: .25em solid rgba(165, 220, 134, .3) !important;
+}
+
+/* 避免全域 margin: 0 影響到 SweetAlert 的線條 positioning */
+.swal2-icon.swal2-success .swal2-success-line-tip,
+.swal2-icon.swal2-success .swal2-success-line-long {
+    margin: 0 !important; /* 其實 SweetAlert 內部也是 margin: 0，但確保不被覆蓋 */
+    padding: 0 !important;
+}
+
+/* 移除造成排版問題的輔助性元素 */
+.swal2-success-circular-line-left,
+.swal2-success-circular-line-right,
+.swal2-success-fix {
+    display: none !important;
+}
+

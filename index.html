@@ -100,6 +100,27 @@
                 </div>
             </div>
 
+            <!-- 代墊統計區塊 -->
+            <div class="bells-card settlement-card">
+                <div class="settlement-header">
+                    <span class="label"><i class="ph ph-hand-coins"></i> 代墊統計 (本月)</span>
+                    <button id="btn-clear-all-settlements" class="btn btn-sm btn-secondary" style="width: auto; padding: 4px 12px; font-size: 12px;">一鍵結清</button>
+                </div>
+                <div class="bell-stats">
+                    <div class="stat-item">
+                        <span class="label">Alan 代墊</span>
+                        <span id="alan-proxy-amount" class="amount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Peiya 代墊</span>
+                        <span id="peiya-proxy-amount" class="amount">0</span>
+                    </div>
+                </div>
+                <div class="settlement-footer">
+                    <span id="settlement-diff-msg">等待計算...</span>
+                </div>
+            </div>
+
             <!-- 功能按鈕區 -->
             <div class="action-grid">
                 <button id="btn-add-transaction" class="action-card income">
